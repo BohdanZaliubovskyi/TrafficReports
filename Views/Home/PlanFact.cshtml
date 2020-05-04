@@ -1,0 +1,66 @@
+﻿@model TestTrafficReports.Models.CarriageFilterModel
+
+@{
+    ViewBag.Title = "Отчет план/факт";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>План/факт</title>
+</head>
+<body>
+    <div>
+        <br />
+        <form method="get">
+            <div class="form-inline">
+                <label class="control-label">Город отправки: </label>
+                @Html.DropDownList("sendingCity", Model.Cities as SelectList,
+                            htmlAttributes: new { @class = "form-control" })
+
+                <label class="control-label">Город получения: </label>
+                @Html.DropDownList("arrivalCity", Model.Cities as SelectList,
+                        htmlAttributes: new { @class = "form-control" })
+
+                <input type="submit" value="Фильтр" class="btn btn-default" />
+            </div>
+        </form>
+        <br />
+        <table border="1">
+            <tr style="color:blue">
+                <td><p>Город отправки</p></td>
+                <td><p>Город прибытия</p></td>
+                <td><p>Плановое кол-во перевозок</p></td>
+
+                @for (int i = 1; i <= ViewBag.DayCount; ++i)
+                {
+                    <td><p>@i.ToString()</p></td>
+                }
+                <td><p>Итого фактическое кол-во перевозок</p></td>
+                <td></td>
+            </tr>
+            @foreach (var item in Model.CurСarriages)
+            {
+            <tr>
+                <td><p>@ViewBag.CitiesDict[item.SendingCityId].Name</p></td>
+                <td><p>@ViewBag.CitiesDict[item.ArrivalCityId].Name</p></td>
+                <td><p>@Html.DisplayFor(modelItem => item.PlanCarriage)</p></td>
+
+                @{
+                    int FactCarrSum = 0;
+                }
+                @foreach (var cc in item.FactualCarriage)
+                {
+                    FactCarrSum = FactCarrSum + cc.CarrValue;/*долбаный парсер*/
+                    <td><p>@cc.CarrValue</p></td>
+
+                }
+                <td><p>@FactCarrSum</p></td>
+            </tr>
+            }
+        </table>
+    </div>
+</body>
+</html>

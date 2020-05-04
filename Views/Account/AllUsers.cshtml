@@ -1,0 +1,20 @@
+﻿@model TestTrafficReports.Models.UserViewModel
+
+@{
+    ViewBag.Title = "Список пользователей";
+}
+
+<br/>
+<div>
+    <h4>Список пользователей</h4>
+    <hr />
+    <table>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>@user.Login</td>
+                <td><a href="ChangeRoles/@user.Id">Изменить роли</a></td>
+            </tr>
+        }
+    </table>
+</div>
